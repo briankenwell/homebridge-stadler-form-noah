@@ -1,0 +1,168 @@
+{
+  "pluginAlias": "StadlerFormNoah",
+  "pluginType": "platform",
+  "singular": true,
+  "headerDisplay": "Controls Stadler Form Noah / Noah Pro humidifiers locally over your LAN using the Tuya protocol. You need each device's Tuya **Device ID** and **Local Key** \u2014 see the README for how to obtain them.",
+  "footerDisplay": "Having trouble? Enable Homebridge debug mode (-D) and check the log for `[Noah]` lines.",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Platform Name",
+        "type": "string",
+        "default": "Stadler Form Noah",
+        "required": true
+      },
+      "devices": {
+        "title": "Humidifiers",
+        "type": "array",
+        "items": {
+          "title": "Humidifier",
+          "type": "object",
+          "properties": {
+            "name": {
+              "title": "Name",
+              "type": "string",
+              "default": "Humidifier",
+              "required": true,
+              "description": "Name shown in the Home app."
+            },
+            "id": {
+              "title": "Tuya Device ID",
+              "type": "string",
+              "required": true,
+              "placeholder": "bf1234567890abcdef12",
+              "description": "The device's Tuya ID (20-22 characters)."
+            },
+            "key": {
+              "title": "Tuya Local Key",
+              "type": "string",
+              "required": true,
+              "placeholder": "0123456789abcdef",
+              "description": "16-character local key. Changes if you re-pair the device in the Stadler Form / Smart Life app."
+            },
+            "ip": {
+              "title": "IP Address",
+              "type": "string",
+              "format": "ipv4",
+              "placeholder": "192.168.1.50",
+              "description": "Optional. Leave blank to discover the device by UDP broadcast on the local network. Set this if Homebridge runs in a different subnet or inside Docker without host networking."
+            },
+            "version": {
+              "title": "Tuya Protocol Version",
+              "type": "string",
+              "default": "auto",
+              "oneOf": [
+                {
+                  "title": "Auto-detect (recommended)",
+                  "enum": [
+                    "auto"
+                  ]
+                },
+                {
+                  "title": "3.3",
+                  "enum": [
+                    "3.3"
+                  ]
+                },
+                {
+                  "title": "3.4",
+                  "enum": [
+                    "3.4"
+                  ]
+                },
+                {
+                  "title": "3.5",
+                  "enum": [
+                    "3.5"
+                  ]
+                }
+              ],
+              "description": "Auto-detect requires UDP discovery to work. If you set a fixed IP you should also set the version."
+            },
+            "model": {
+              "title": "Model",
+              "type": "string",
+              "default": "Noah",
+              "oneOf": [
+                {
+                  "title": "Noah",
+                  "enum": [
+                    "Noah"
+                  ]
+                },
+                {
+                  "title": "Noah Pro",
+                  "enum": [
+                    "Noah Pro"
+                  ]
+                }
+              ]
+            },
+            "pollInterval": {
+              "title": "Poll Interval (seconds)",
+              "type": "integer",
+              "default": 30,
+              "description": "How often to request full state from the device. The device also pushes changes instantly; this is a safety net.",
+              "placeholder": "30"
+            },
+            "exposeFanControl": {
+              "title": "Expose fan speed as a separate fan",
+              "type": "boolean",
+              "default": false,
+              "description": "The Home app hides fan speed on humidifier accessories. Enable to add a Fan tile with a 5-step speed slider (power is shared with the humidifier)."
+            },
+            "exposeDisplayLight": {
+              "title": "Expose display brightness as a light",
+              "type": "boolean",
+              "default": false,
+              "description": "Adds a dimmable light tile (Off / 50% / 100%) that controls the LED display. Note: some firmware reverts this setting on its own."
+            },
+            "exposeWaterTankSensor": {
+              "title": "Expose water-tank-empty as a contact sensor",
+              "type": "boolean",
+              "default": false,
+              "description": "Adds a contact sensor that opens when the tank is empty, useful for notifications and automations."
+            },
+            "homekitRevision": {
+              "title": "HomeKit accessory revision",
+              "type": "integer",
+              "default": 0,
+              "description": "Leave at 0. Increase by one to re-publish this device as a brand-new accessory, which forces the Home app to discard all cached properties (slider ranges etc.). The accessory will need to be assigned to its room again and any scenes/automations using it re-created."
+            },
+            "filterLifeIsUsed": {
+              "title": "Filter life datapoint reports % used",
+              "type": "boolean",
+              "default": false,
+              "description": "Enable if the Filter Life shown in Home is the inverse of what the Stadler Form app shows (the device reports % consumed rather than % remaining)."
+            }
+          }
+        }
+      }
+    }
+  },
+  "layout": [
+    "name",
+    {
+      "key": "devices",
+      "type": "array",
+      "title": "Humidifiers",
+      "buttonText": "Add humidifier",
+      "orderable": false,
+      "items": [
+        "devices[].name",
+        "devices[].id",
+        "devices[].key",
+        "devices[].model",
+        "devices[].ip",
+        "devices[].version",
+        "devices[].pollInterval",
+        "devices[].exposeFanControl",
+        "devices[].exposeDisplayLight",
+        "devices[].exposeWaterTankSensor",
+        "devices[].filterLifeIsUsed",
+        "devices[].homekitRevision"
+      ]
+    }
+  ]
+}

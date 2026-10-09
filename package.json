@@ -1,0 +1,59 @@
+{
+  "name": "homebridge-stadler-form-noah",
+  "displayName": "Stadler Form Noah",
+  "version": "0.1.6",
+  "description": "Homebridge plugin that exposes the Stadler Form Noah / Noah Pro humidifier to Apple Home over the local Tuya LAN protocol.",
+  "license": "MIT",
+  "author": "Brian Kenwell",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/briankenwell/homebridge-stadler-form-noah.git"
+  },
+  "bugs": {
+    "url": "https://github.com/briankenwell/homebridge-stadler-form-noah/issues"
+  },
+  "homepage": "https://github.com/briankenwell/homebridge-stadler-form-noah#readme",
+  "type": "module",
+  "main": "dist/index.js",
+  "engines": {
+    "node": "^20.18.0 || ^22.10.0 || ^24.0.0 || ^26.0.0",
+    "homebridge": "^1.8.0 || ^2.0.0-beta.0"
+  },
+  "keywords": [
+    "homebridge-plugin",
+    "homebridge",
+    "stadler form",
+    "noah",
+    "humidifier",
+    "tuya",
+    "homekit"
+  ],
+  "files": [
+    "dist",
+    "config.schema.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "rimraf dist && tsc && node -e \"require('fs').writeFileSync('dist/build-stamp.json', JSON.stringify({version: require('./package.json').version, builtAt: new Date().toISOString()}))\"",
+    "prepare": "npm run build",
+    "lint": "eslint src test --max-warnings=0",
+    "test": "npm run build && node --test --import tsx test/",
+    "watch": "npm run build && npm link && nodemon",
+    "prepublishOnly": "npm run lint && npm run build"
+  },
+  "dependencies": {
+    "tuyapi": "^7.7.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/node": "^22.0.0",
+    "eslint": "^9.0.0",
+    "homebridge": "^2.0.0",
+    "nodemon": "^3.1.0",
+    "rimraf": "^6.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "typescript-eslint": "^8.0.0"
+  }
+}
